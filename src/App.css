@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css?family=Oswald:300,400|Baloo+Da+2:400,600&display=swap");
+
+html,
+body {
+  z-index: -1;
+  margin: 0px;
+  padding: 0px;
+  /* color: #fff; */
+  /* height: 100%; */
+  
+  font-family: "Baloo Da 2", cursive;
+}
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.App a {
+  color: #828ed4;
+  transition: 0.2s all ease-in-out;
+}
+.App a:hover {
+  opacity: 0.75;
+}
+
+.App {
+  z-index: 10;
+  text-align: center;
+  margin: 0px;
+  transition: 0.1s all ease-in-out;
+  animation: app-enter-anim 0.1s ease-out;
+}
+.App-text {
+  opacity: 1;
+  transition: 0.1s all ease-in-out;
+}
+.App-particles__container {
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  z-index: 0;
+  /* background-color: #021b39; */
+  /* background-color:#071722; */
+}
+.App-particles__container canvas {
+  transition: 0.2s all ease-in-out;
+  z-index: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.App-text__title {
+  margin: 0px;
+  font-weight: 400;
+  font-size: 3.25rem;
+  letter-spacing: 0.5rem;
+  font-family: "Oswald", sans-serif;
+}
+.App-text__body {
+  margin: 0px;
+  margin-top: 12px;
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+@keyframes app-enter-anim {
+  from {
+    opacity: 0.8;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transfrom: scale(1);
+  }
+}
+@-webkit-keyframes app-enter-anim {
+  from {
+    opacity: 0.8;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transfrom: scale(1);
+  }
+}
