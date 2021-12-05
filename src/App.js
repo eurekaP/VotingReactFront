@@ -30,6 +30,7 @@ import ForgotPassword from './components/ForgotPassword';
 import CandidateLogin from './components/CandidateLogin';
 
 
+
 function ScrollTop(props) {
   const { children, window } = props;
   const trigger = useScrollTrigger({

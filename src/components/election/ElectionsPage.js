@@ -32,6 +32,8 @@ import AddNewAdmin from './AddNewAdmin';
 import Elections from './Elections';
 import VoterManagement from './VoterManagement';
 import ElectionVote from './ElectionVote';
+import ElectionStatus from './ElectionStatus';
+
 
 export default function ElectionsPage() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -176,6 +178,8 @@ export default function ElectionsPage() {
             <Route path='/elections/election-new' component={AddNewElection} />
             <Route path='/elections/voter-management' component={VoterManagement} />
             <Route path='/elections/election-vote' component={ElectionVote}/>
+            <Route path='/elections/election-status' component={ElectionStatus}/>
+
           </Switch>
       </Grid>
       </Grid>

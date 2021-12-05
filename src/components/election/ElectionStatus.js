@@ -23,6 +23,27 @@ import {
     IconButton,
     Snackbar
 } from '@material-ui/core';
+
+import {
+    ArgumentAxis,
+    ValueAxis,
+    Chart,
+    BarSeries,
+
+    PieSeries,
+    Title,
+    // Animation,
+} from '@devexpress/dx-react-chart-material-ui';
+
+import PieChart, {
+    Legend,
+    Export,
+    Series,
+    Label,
+    Font,
+    Connector,
+} from 'devextreme-react/pie-chart';
+
 import MuiAlert from '@material-ui/lab/Alert';
 import {
     ArrowBackIosOutlined,
@@ -33,7 +54,7 @@ import ChartIcon from '@mui/icons-material/BarChart';
 import {makeStyles} from '@material-ui/core/styles';
 import getWeb3 from '../../getWeb3';
 import {contractAbi} from '../../app/contractAbi';
-import { selectionActions } from '../../actions/selection.action';
+// import { selectionActions } from '../../actions/selection.action';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const Alert=React.forwardRef(function Alert(props, ref){
@@ -65,13 +86,7 @@ const useStyles = makeStyles((theme)=>({
         width:"120px",
     },
     statusbutton: {
-        backgroundColor:"#1bc714",
-        color:"#fff",
-        '&:hover': {
-            backgroundColor: '#1ddf15',
-        },
-        textTransform:'none',
-        width:"150px",
+        width: "150px"
     },
     card: {
         display: "flex",
@@ -95,6 +110,19 @@ const useStyles = makeStyles((theme)=>({
         height:theme.spacing(12),
         boxShadow:theme.spacing(12),
     },
+    boardTitle: {
+        fontWeight: 'bold',
+        fontSize: '2rem',
+        paddingLeft: '0.5rem',
+    },
+    boardContent: {
+        fontSize: '3rem',
+        textAlign: 'center',
+        padding: '10%',
+    },
+    boardIndex: {
+        color: 'darkgray',
+    }
 }));
 
 
@@ -115,6 +143,17 @@ const cards=[
         img:"driver.png"
     },
     
+];
+
+const chartData = [
+    { argument: 'Alex', value: 30 },
+    { argument: 'Denys Meydanove', value: 20 },
+    { argument: 'Nikolai Baska', value: 26 },
+    { argument: 'Venezina', value: 42 },
+    { argument: 'Pusharugu', value: 12 },
+    { argument: 'Alex1', value: 10 },
+    { argument: 'Denys Meydanove1', value: 26 },
+    { argument: 'Nikolai Bask1a', value: 11 },
 ];
 
 const fakeElectionOptions = [
@@ -188,7 +227,7 @@ export default function ElectionVote(){
     },[electionOptions]);
 
     const handleToBack=()=>{
-        dispatch(selectionActions.clear());
+        // dispatch(selectionActions.clear());
         history.push('/elections');
     }
     const checkPromissionToVote=()=>{
@@ -325,15 +364,9 @@ export default function ElectionVote(){
     }
 
     const handleElectionStatus=() => {
-        console.log(selectedId);
-        console.log(selectedName);
-        const selectedItem={
-            selectedId:selectedId,
-            selectedName:selectedName,
-          }
-        dispatch(selectionActions.setSelectedItem(selectedItem));
-
-        history.push('/elections/election-status');
+        alert(selectedId);
+        alert(selectedName);
+        // history.push('/election-status')
     }
 
     const handleAlertClose=(event,reason)=>{
@@ -342,6 +375,11 @@ export default function ElectionVote(){
         }
         setAlertOpen(false);
     }
+
+    function customizeText(arg) {
+        return `${arg.valueText} (${arg.percentText})`;
+    }
+
     return(
         <>
             {
@@ -359,9 +397,60 @@ export default function ElectionVote(){
                         Back
                     </IconButton>
                 </Grid>
-                <Grid container item xs={12} sm={12} md={7} lg={7} xl={7} style={{padding:'2%'}}>
+                <Grid container style={{padding:'1%'}}>
+                    <Grid container item xs={12} sm={12} md={6} lg={6} xl={6}>
+                        <Paper className={classes.paper} elevation={8}>
+                            <Chart data={chartData}>
+                                <ArgumentAxis />
+                                <ValueAxis />
+                            
+                                <BarSeries valueField="value" argumentField="argument" />
+                            </Chart>
+                        </Paper>
+                    </Grid>
+                    <Grid container item xs={12} sm={12} md={6} lg={6} xl={6}>    
+                        <Paper className={classes.paper} elevation={8}>
+                            <PieChart id="pie"
+                                palette="Bright"
+                                dataSource={chartData}
+                                // title="Olympic Medals in 2008"
+                            >
+                                <Legend
+                                orientation="horizontal"
+                                itemTextPosition="right"
+                                horizontalAlignment="center"
+                                verticalAlignment="bottom"
+                                columnCount={4} />
+                                <Export enabled={true} />
+                                <Series argumentField="argument" valueField="value">
+                                <Label
+                                    visible={true}
+                                    position="columns"
+                                    customizeText={customizeText}>
+                                    <Font size={16} />
+                                    <Connector visible={true} width={0.5} />
+                                </Label>
+                                </Series>
+                            </PieChart>      
+                        </Paper>                      
+                    </Grid>
+                </Grid>
+                <Grid container style={{padding:'2%'}}>
+                    {chartData.map((chart, index) => (
+                        
+                        <Grid container item xs={12} sm={12} md={3} lg={3} xl={3}> 
+                            <Paper className={classes.paper} elevation={8} style={{padding: '5%'}}>
+                                <Typography className={classes.boardTitle}> {chart.argument} </Typography>
+                                <Typography className={classes.boardIndex}> {`#${index + 1}`} </Typography>
+                                <Typography className={classes.boardContent}> {chart.value} </Typography>
+                            </Paper>
 
-                    <Paper className={classes.paper} elevation={16}>
+                        </Grid>
+                    ))}
+                </Grid>
+                {/* <Grid container item xs={12} sm={12} md={7} lg={7} xl={7} style={{padding:'1%'}}>
+
+                    <Paper className={classes.paper} elevation={1}>
                         <form className={classes.form}>
                             <Grid container style={{padding:'3%',flexWrap:'nowrap'}}>
                                 <Typography style={{fontWeight:'bold'}}> Election Name:</Typography>
@@ -466,7 +555,7 @@ export default function ElectionVote(){
                         </form>
                     </Paper>
                 </Grid>
-                <Grid container item xs={12} sm={12} md={5} lg={5} xl={5} style={{padding:'2%'}}>
+                <Grid container item xs={12} sm={12} md={5} lg={5} xl={5} style={{padding:'1%'}}>
                    <Box className={classes.paper}>
                         <Paper elevation={16} style={{maxHeight:'150px', marginBottom:'30px'}}>
                             <form className={classes.form}>
@@ -526,7 +615,7 @@ export default function ElectionVote(){
                             </form>
                         </Paper>
                     </Box>
-                </Grid>
+                </Grid> */}
             </Grid>
         </>
     );
