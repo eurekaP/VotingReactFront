@@ -395,7 +395,7 @@ export default function ElectionVote(){
                             <Divider/>
                             
                             <Grid container style={{flexGrow:1,marginTop:'30px', maxHeight:'80vh', overflowY:'auto'}}>
-                                {
+                                {/* {
                                     electionOptions.map((option)=>(
                                     
                                     <Grid container key={option.optionIndex} style={{paddingRight:'5%', paddingBottom:'20px'}}>
@@ -410,7 +410,7 @@ export default function ElectionVote(){
                                         </Grid>
                                          
                                     </Grid>
-                                ))} 
+                                ))}  */}
                                 
                                 <Grid container >
                                     {electionOptions.map((card) => (
