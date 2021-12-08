@@ -50,7 +50,9 @@ const useStyles=makeStyles((theme)=>({
       },
 
       ['@media (max-width:400px)']: {
-        fontSize: 18,
+        fontSize: 16,
+        fontWeight: 500,
+        margin: 0,
       },
     },
     linkButton:{
@@ -107,9 +109,6 @@ function Navbar(){
                             </IconButton> 
                             <IconButton color="inherit" className={classes.iconButton} onClick={handleToElectionsPage}>
                                 Elections
-                            </IconButton>
-                            <IconButton color="inherit" className={classes.iconButton}>
-                                Contact
                             </IconButton>
                         </Grid>
                     </Grid>

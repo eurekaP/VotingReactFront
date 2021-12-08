@@ -442,7 +442,7 @@ function HomePage(){
                             </Grid>                              
                         </Grid>
                         <Grid container justifyContent="center" alignItems="center" item md={4} className={classes.dashboardImg}>
-                            <img src="image/ipad-dashboard.jpg" className={classes.mdHiden} style={{padding:'5%'}}/>
+                            <img src="image/React Chart UI.png" className={classes.mdHiden} style={{width:'130%'}}/>
                         </Grid>                       
                     </Grid>
                     {/* <Grid container >

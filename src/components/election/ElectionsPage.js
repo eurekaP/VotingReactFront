@@ -148,12 +148,6 @@ export default function ElectionsPage() {
                 Add New Admin
               </MenuItem>
               <Divider />
-              <MenuItem>
-                <ListItemIcon>
-                  <Settings fontSize="small" />
-                </ListItemIcon>
-                Settings
-              </MenuItem>
               <MenuItem onClick={handleToLogout}>
                 <ListItemIcon>
                   <Logout fontSize="small" />

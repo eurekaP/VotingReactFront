@@ -138,7 +138,7 @@ export default function AdminLoginPage(){
             }).then(res=>{
                 console.log(res);
                 if(res){
-                    alert('once Admin selected');
+                    // alert('once Admin selected');
                     dispatch(adminActions.isAdmin(true));
                     localStorage.setItem('isAdmin', "true");
                     history.push('/elections');
@@ -178,7 +178,7 @@ export default function AdminLoginPage(){
                         <CssBaseline/>
                         <Grid container>
                             <Typography variant="h5" style={{marginLeft:"8vw", paddingTop:"2vw", paddingBottom:"2vh"}}>
-                                Authentication
+                                Authentication of Admin
                             </Typography>
                         </Grid>
                         <Divider style={{width:"100%"}}/>

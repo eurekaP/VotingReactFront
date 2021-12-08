@@ -39,6 +39,8 @@ import MuiAlert from '@material-ui/lab/Alert';
 import http from '../../http.comon';
 import { pageActions } from "../../actions/pageInfo.action";
 import Particles from '../Particles'
+import getWeb3 from "../../getWeb3";
+
 
 const Alert=React.forwardRef(function Alert(props, ref){
   return  <MuiAlert elevation={6} ref={ref} variant="filled" {...props}/>
@@ -131,10 +133,12 @@ export default function VoterRegisterPage() {
         phone:'',
         address:'',
         password:'',
-        photo:null
+        photo:null,
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const [currentAccount, setCurrentAccount] = useState('');
+
     const alertContent = useSelector(state=>state.alert);
     const registered = useSelector(state=>state.registeration.registered);
     const registering = useSelector(state=>state.registeration.registering);
@@ -148,7 +152,24 @@ export default function VoterRegisterPage() {
       dispatch(userActions.logout());
       dispatch(alertActions.clear());
       dispatch(pageActions.setPageName('voterregister'));
+      checkMetaMask();
     },[]);
+
+    const checkMetaMask = async() => {
+      try{
+        const web3 = await getWeb3();
+        await web3.eth.requestAccounts();
+        const accounts = await web3.eth.getAccounts();
+           
+        if(accounts.length>0){
+            
+            setCurrentAccount(accounts[0]);
+        }
+      } catch (error){
+        dispatch(alertActions.error("Can't found MetaMask. Please install MetaMask or unlock Metask."));
+        setOpen(true);
+      }
+    }
 
     const handleConfirm=()=>{
       if(!code){
@@ -156,7 +177,7 @@ export default function VoterRegisterPage() {
         setOpen(true);
         return;
       }
-      if(code!=vcode){  // code == vcode
+      if(code==vcode){  // code == vcode
        
         const newVoter = user;
         newVoter.verified=true;
@@ -175,8 +196,6 @@ export default function VoterRegisterPage() {
         setCode('');
         setOpen(true);
       }
-      
-
     }
     const handleVerificationCancel=()=>{
       setVcode('');
@@ -211,44 +230,53 @@ export default function VoterRegisterPage() {
      * submit voter data inputed
      */
     const handleSubmit=()=>{
-      setSubmitted(true);
-      if( voter.name && voter.username && voter.email && voter.phone && voter.address && voter.password){
-        if(image==null)
+      try{
+        if(currentAccount)
         {
-          dispatch(alertActions.error("Please turn on your camera and take a photo from yourself."));
-          setOpen(true);
-          return;
-        }
-        const base64Image = Buffer.from(image).toString().replace(/^data:image\/png;base64,/, "");
-        
-        const newVoter={
-          name:voter.name,
-          username:voter.username,
-          email:voter.email,
-          phone:voter.phone,
-          address:voter.address,
-          password:voter.password,
-          base64Image:base64Image,
-          luxandId:0,
-          verified:false
-        }
-        setEmail(newVoter.email);
-        setUser(newVoter);
+          setSubmitted(true);
+          if( voter.name && voter.username && voter.email && voter.phone && voter.address && voter.password){
+            if(image==null)
+            {
+              dispatch(alertActions.error("Please turn on your camera and take a photo from yourself."));
+              setOpen(true);
+              return;
+            }
+            const base64Image = Buffer.from(image).toString().replace(/^data:image\/png;base64,/, "");
+            
+            const newVoter={
+              name:voter.name,
+              username:voter.username,
+              email:voter.email,
+              phone:voter.phone,
+              address:voter.address,
+              password:voter.password,
+              base64Image:base64Image,
+              luxandId:0,
+              walletaccount:currentAccount,
+              verified:false
+            }
+            setEmail(newVoter.email);
+            setUser(newVoter);
 
-        http.post('/auth/user/verify-email',{name:voter.name, email:voter.email})
-        .then(res=>{
-          console.log(res);
-          const {email, verificationCode} = res.data;
-          setVcode(verificationCode);
-          
-        },error=>{
-          dispatch(alertActions.error(error.toString()));
-          setOpen(true);
-        })
-        
-        setDlgOpen(true);
-      }
-        
+            http.post('/auth/user/verify-email',{name:voter.name, email:voter.email})
+            .then(res=>{
+              console.log(res);
+              const {email, verificationCode} = res.data;
+              setVcode(verificationCode);
+              
+            },error=>{
+              dispatch(alertActions.error(error.toString()));
+              setOpen(true);
+            })
+            
+            setDlgOpen(true);
+          }
+        }
+
+      } catch (error){
+        dispatch(alertActions.error("Some errors occurred while connecting your wallet1."));
+        setOpen(true);
+      } 
     }
     /**
      * get value user input from input
@@ -481,7 +509,7 @@ export default function VoterRegisterPage() {
                         </Grid>
                         { 
                           !isEmpty(image) &&
-                          <Grid container justifyContent="center" alignItems="center" style={{marginTop:"2vh"}}>
+                          <Grid container justifyContent="center" alignItems="center" style={{marginTop:"2vh", zIndex:'1'}}>
                               <Grid container justifyContent="center" alignItems="center" style={{backgroundColor:"#fff",width:"90%",minHeight:"90%", marginBottom:"0vh", borderRadius:"0.35em"}}>
                                   <img src={image} style={{width:"98%", height:"98%"}}/>
                               </Grid>

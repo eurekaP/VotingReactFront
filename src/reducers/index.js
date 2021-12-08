@@ -2,6 +2,7 @@ import {combineReducers} from 'redux';
 import {alert} from './alert.reducer.js';
 import {authentication} from './authentication.reducer';
 import {registeration} from './registeration.reducer';
+import {voter} from './voter.reducer'
 import { electionContractAddress } from './contractAddress.reducer.js';
 import {adminInfo} from './admin.reducer';
 import {forgotEmail} from './forgotEmail.reducer';
@@ -16,6 +17,7 @@ const rootRudecer= combineReducers({
     adminInfo,
     forgotEmail,
     pageInfo,
-    selectionInfo
+    selectionInfo,
+    voter
 })
 export default rootRudecer;

@@ -56,18 +56,20 @@ function register(userData){
 
 function getAll(){
     return dispatch=>{
+        let users;
         http.post('/auth/user-data')
-            .then(user=>{
-                localStorage.setItem('users',JSON.stringify(user));
-                dispatch(success(user));
+            .then(response=>{
+                users = response.data;
+                localStorage.setItem('users',JSON.stringify(response.data));
+                dispatch(success(users));
             },
             error=>{
                 dispatch(failure(error.toString()));
             }
             );
     };
-    function success(users){return {type:userType.GET_ALL_SUCCESS,users}}
-    function failure(error){return {type:userType.GET_ALL_FAILURE,error}}
+    function success(users){return {type:userType.GET_ALL_SUCCESS, users}}
+    function failure(error){return {type:userType.GET_ALL_FAILURE, error}}
 }
 
 function _delete(id){

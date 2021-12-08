@@ -245,8 +245,8 @@ export default function VoterLoginPage() {
     }
     const capture = React.useCallback(
       ()=>{
-        // const imageSrc = webcamRef.current.getScreenshot();
-        const imageSrc = './image/driver.png';
+        const imageSrc = webcamRef.current.getScreenshot();
+        // const imageSrc = './image/driver.png';
 
         setImage(imageSrc);
       },
