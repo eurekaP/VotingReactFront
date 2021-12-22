@@ -1,6 +1,6 @@
 import axios from 'axios';
 export default axios.create({
-    baseURL:"http://159.223.87.19:8080",
+    baseURL:"https://nepalvotes.info",
     headers:{
         "Content-type":"application/json"
     }
